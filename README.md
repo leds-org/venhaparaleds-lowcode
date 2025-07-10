@@ -1,98 +1,173 @@
-# Desafio Low Code - LEDS
-*Bem-vindo!* 👋
+# Desafio LEDS - Sistema de Gerenciamento de Concursos e Candidatos
 
-Neste desafio, você terá a oportunidade de demonstrar que possui as habilidades necessárias para atuar no time de Low/No Code.
+## [_Clique para acessar Aplicação_](https://desafio-leds-luizrojas.appsmith.com/app/desafio-back-end-lowcode-leds/home-686eec1a4c97004f2122aea6?branch=main)
 
-# Contextualização
+## 1. Contextualização e Objetivo
 
-O desafio é desenvolver um sistema em Low/No Code que permita realizar as seguintes buscas: 
-1. Listar os **órgãos, códigos e editais dos concursos públicos** que se encaixam no perfil do candidato, tomando como base o seu **CPF**; 
-2. Listar o **nome, data de nascimento e o CPF** dos candidatos que se encaixam no perfil do concurso tomando com base o **Código do Concurso** do concurso público;
+Este projeto foi desenvolvido como parte do **Desafio Low/No Code - LEDS**.  
+O objetivo principal é criar um sistema capaz de realizar buscas e gerenciar dados de concursos públicos e candidatos, atendendo aos seguintes requisitos:
 
-O arquivo **candidatos.txt** contém as informações dos candidatos:
+- **Listar os órgãos, códigos e editais** dos concursos públicos que se encaixam no perfil do candidato, com base no CPF informado.
+- **Listar o nome, data de nascimento e CPF** dos candidatos que se encaixam no perfil de um concurso, com base no código do concurso.
+- Disponibilizar operações completas de **CRUD** (Create, Read, Update, Delete) para candidatos e concursos.
 
-| Nome  | Data de Nascimento  | CPF |  Profissões|
-|---|---|---|---|
-| Lindsey Craft  |  19/05/1976  |  182.845.084-34  |  [carpinteiro]  | 
-| Jackie Dawson  |  14/08/1970  |  311.667.973-47  |  [marceneiro, assistente administrativo]  |
-| Cory Mendoza |   11/02/1957 |  565.512.353-92  |  [carpinteiro, marceneiro] |
+---
 
-O arquivo **concursos.txt** contém as informações dos concursos públicos:
+## 2. Tecnologias Utilizadas
 
-| Órgão  | Edital  | Código do Concurso | Lista de vagas|
-|---|---|---|---|
-| SEDU  | 9/2016  |  61828450843  |  [analista de sistemas, marceneiro]  | 
-| SEJUS | 15/2017  |  61828450843  |  [carpinteiro,professor de matemática,assistente administrativo] |
-| SEJUS | 17/2017 |  95655123539  |  [professor de matemática] |
+| Camada | Tecnologia |
+| ------ | ---------- |
+| Frontend / Plataforma Low‑Code | **Appsmith** |
+| Backend / API REST | **Python (Flask)** |
+| Banco de Dados | **PostgreSQL** (local via Docker) <br> **Neon DB** (nuvem) |
+| Conteinerização | **Docker** & **Docker Compose** |
 
-🤩 **As tecnologias a serem utilizadas na implementação da solução ficam a seu critério!**
+---
 
-# Como entregar?
-1. Faça um **fork** do repositório. Nesse fork esperamos encontrar uma documentação completa da solução e a listagem dos diferenciais implementados.
-2. Abra um **pull request (PR)** do seu fork para o nome repositório com o seu nome como título. Assim conseguimos te localizar melhor e ver que você já finalizou o desafio!
+## 3. Arquitetura da Solução
 
-🚨 **Atenção**: você deve enviar apenas o código fonte. Não serão aceitos códigos compilados.
+A solução foi pensada em microsserviços conteinerizados, separados em duas abordagens complementares:
 
-## Avaliação
+1. **Execução local (Docker Compose)**  
+   - **Appsmith**: Interface do usuário, comunicando‑se com a API.  
+   - **API REST (Flask)**: Implementa a lógica de negócio e expõe endpoints RESTful.  
+   - **PostgreSQL**: Banco de dados rodando em contêiner.  
 
-O programa será avaliado levando em conta os seguintes critérios:
+2. **Execução em nuvem (Appsmith Cloud + Neon DB)**  
+   - **Appsmith Online** se conecta **diretamente** ao **Neon DB**, dispensando API própria quando desejado.  
+   - O código‑fonte da API permanece disponível para evoluções futuras ou execução on‑premises.
 
-| Critério  | Valor | 
-|---|---|
-| Legibilidade do Código |  10  |
-| Documentação do código |  10  |
-| Documentação da solução |  10  |
-| Tratamento de Erros | 10 | 
-| Total | 40 |
+Um diagrama simplificado:
 
-A sua pontuação será a soma dos valores obtidos nos critérios acima.
+```text
+┌──────────┐        REST        ┌────────────┐
+│ Appsmith │ ───────────────▶  │   API      │
+│ Frontend │ ◀───────────────  │  Flask     │
+└──────────┘     JSON          └────┬───────┘
+                                     │ SQL
+                              ┌──────▼──────┐
+                              │ PostgreSQL  │
+                              └─────────────┘
+```
 
-## Diferenciais 
-Você pode **aumentar sua pontuação** implementando os seguintes diferenciais:
+---
 
-| Item  | Pontos Ganhos | 
-|---|---|
-| Criar um [serviço](https://martinfowler.com/articles/microservices.html) com o problema |  30  |
-| Utilizar banco de dados |  30  |
-| Implementar Clean Code |  20  |
-| Implementar o padrão de programação da tecnologia escolhida |  20  |
-| Qualidade de [Código com SonarQube](https://about.sonarcloud.io/) |  15  |
-| Implementar testes unitários |  15  |
-| Implementar testes comportamentais |  15  |
-| Implementar integração com [Github Action](https://github.com/features/actions)  |  10  |
-| Implementar integração com Github Action + SonarQube |  10  |
-| Implementar usando Docker | 5 |
-| Total| 170 |
+## 4. Como Executar a Solução Localmente
 
-A pontuação final será calculada somando os critérios obrigatórios e os diferenciais implementados corretamente.
+### 4.1 Pré‑requisitos
 
-# Penalizações
+- **Docker Desktop** (inclui Docker Compose).  
+- **Python 3.9+**
 
-Você será desclassificado se:
+### 4.2 Clonar o Repositório
 
-1. Enviar uma solução que não funcione.
-2. Não cumprir os critérios da seção **Avaliação**.
-3. For identificado plágio.
-   
-***Que a força esteja com você. Boa sorte!***
+```bash
+git clone <URL_DO_SEU_REPOSITORIO>
+cd <nome_do_seu_repositorio>
+```
 
-<div align="left">
-</div>
+### 4.3 Configurar o PostgreSQL
 
-###
+Crie a pasta **postgres_config/** na raiz do projeto contendo:
 
-<br clear="both">
+**postgresql.conf**
 
-<div align="center">
-  <a href="https://www.linkedin.com/school/ledsifes" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&labelColor=&style=for-the-badge" height="40" alt="linkedin logo"  />
-  </a>
-  <a href="https://www.instagram.com/ledsifes/" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=Instagram&logo=instagram&label=&color=E4405F&logoColor=white&labelColor=&style=for-the-badge" height="40" alt="instagram logo"  />
-  </a>
-  <a href="https://www.youtube.com/@ledsifes/?sub_confirmation=1" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=Youtube&logo=youtube&label=&color=FF0000&logoColor=white&labelColor=&style=for-the-badge" height="40" alt="youtube logo"  />
-  </a>
-</div>
+```ini
+listen_addresses = '*'
+```
 
-###
+**pg_hba.conf**
+
+```
+host    processo_seletivo_app    admin    0.0.0.0/0    md5
+```
+
+### 4.4 Subir o Ambiente
+
+```bash
+docker compose up --build -d
+```
+
+Isso irá:
+
+1. Construir a imagem da API;
+2. Criar contêineres para **Appsmith**, **PostgreSQL** e **API**;
+3. Executá‑los em *detached mode*.
+
+### 4.5 Acessar
+
+- **Appsmith**: <http://localhost>  
+- **API REST** (endpoint de rest): <http://localhost:5000/>
+
+
+Via `psql` dentro do contêiner:
+
+```bash
+docker exec -it <nome_do_container_postgres> psql -U admin -d processo_seletivo_app
+```
+
+---
+
+## 5. Uso do Appsmith + Neon DB (Abordagem Cloud)
+
+- **Appsmith Online**: Interface acessível via navegador, conectada ao Neon DB.  
+- **Neon DB**: PostgreSQL serverless e escalável, com credenciais configuradas diretamente no Appsmith.  
+
+Esta abordagem demonstra a flexibilidade do projeto, possibilitando desenvolvimento local e implantação rápida na nuvem.
+
+---
+
+## 6. Estrutura da API REST
+
+A API **não** está incluída neste arquivo para facilitar a leitura.  
+Abaixo você encontra um **resumo dos endpoints** disponíveis (todos respondem em JSON):
+
+| Método | Rota | Descrição |
+| ------ | ---- | --------- |
+| `GET` | `/` | Teste de rest da API |
+| `GET` | `/concursos` | Lista todos os concursos |
+| `GET` | `/concursos/<codigo>` | Detalhes de um concurso |
+| `GET` | `/concursos/by_cpf/<cpf>` | Concursos compatíveis com o candidato |
+| `POST` | `/concursos` | Cria novo concurso |
+| `PUT` | `/concursos/<codigo>` | Atualiza concurso |
+| `DELETE` | `/concursos/<codigo>` | Remove concurso |
+| `GET` | `/candidatos` | Lista todos os candidatos |
+| `GET` | `/candidatos/<cpf>` | Detalhes de um candidato |
+| `GET` | `/candidatos/by_codigo_concurso/<codigo>` | Candidatos compatíveis com o concurso |
+| `POST` | `/candidatos` | Cria novo candidato |
+| `PUT` | `/candidatos/<cpf>` | Atualiza candidato |
+| `DELETE` | `/candidatos/<cpf>` | Remove candidato |
+| `GET` | `/vagas` | Lista de vagas únicas cadastradas |
+
+---
+
+## 7. Critérios de Avaliação
+
+### 7.1 Legibilidade
+
+- Nomes descritivos para variáveis, funções e endpoints.  
+- Projeto modular.
+
+### 7.2 Documentação
+
+- Docstrings nos endpoints Flask.  
+- Comentários explicativos em JS Objects do Appsmith.  
+- **Dockerfile** e **docker‑compose.yml** comentados.
+
+### 7.3 Tratamento de Erros
+
+- Respostas JSON padronizadas (`400`, `404`, `409`, `500`).  
+- `try‑except` na API e `showAlert()` no Appsmith.
+
+---
+
+## 8. Diferenciais Implementados
+
+- **API RESTful** separada, seguindo Clean Code.  
+- **PostgreSQL** local + **Neon DB** na nuvem.  
+- **Docker** para portabilidade total.  
+- Abordagem **Low‑Code** com Appsmith acelerando o desenvolvimento.
+
+---
+
+> **Licença**: Este projeto é distribuído sob a licença MIT. Sinta‑se à vontade para usar e contribuir!
