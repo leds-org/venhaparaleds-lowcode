@@ -1,0 +1,28 @@
+// Importa a função buscarConcursos do módulo de serviços
+// Essa função é responsável pela lógica de negócio (chamar o model, tratar parâmetros, etc.)
+const { buscarConcursos } = require('../services/concursosService');
+
+// Controlador que lida com a requisição GET para a rota /concursos
+// Recebe os parâmetros da requisição, chama o serviço e retorna os dados ao cliente
+async function getConcursos(req, res) {
+  try {
+    // Extrai o parâmetro 'capacidades' da query string da requisição
+    const { capacidades } = req.query;
+
+    // Chama o serviço, passando as capacidades como argumento
+    // O serviço se encarrega de processar e consultar o banco de dados
+    const concursos = await buscarConcursos(capacidades);
+
+    // Retorna resposta com status 200 (OK) e os dados dos concursos em formato JSON
+    res.status(200).json(concursos);
+  } catch (error) {
+    // Em caso de erro, exibe no console para debug
+    console.error('Erro ao buscar concursos:', error);
+
+    // Retorna erro 500 (erro interno do servidor) com mensagem para o cliente
+    res.status(500).json({ erro: 'Erro ao consultar concursos' });
+  }
+}
+
+// Exporta o controlador para que possa ser usado nas rotas
+module.exports = { getConcursos };

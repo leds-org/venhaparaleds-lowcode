@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "686b4a05fe5b092acdedb632_30e4e492-cfe1-4c7d-bf0b-e6e1df45cd7d",
+  "id": "Busca por cpf_Acao_texto_do_input_alterado",
+  "unpublishedCollection": {
+    "name": "Acao_texto_do_input_alterado",
+    "pageId": "Busca por cpf",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}

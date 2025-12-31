@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "686b4a05fe5b092acdedb632_f52ceff8-399a-4fe0-8121-6279005d083d",
+  "id": "Busca por cpf_Acao_de_botao_busca_por_cpf",
+  "unpublishedCollection": {
+    "name": "Acao_de_botao_busca_por_cpf",
+    "pageId": "Busca por cpf",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}
